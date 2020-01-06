@@ -74,7 +74,8 @@ namespace DesafioPV.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var empresa = _session.Get<Empresa>(id);
+            return View(empresa);
         }
 
         [HttpPost]
@@ -82,14 +83,24 @@ namespace DesafioPV.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    _session.Delete(empresa);
+                    transaction.Commit();
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
             }
+        }
+
+        public ActionResult Details(int id)
+        {
+            var empresa = _session.Get<Empresa>(id);
+            return View(empresa);
+
         }
 
     }

@@ -13,9 +13,13 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ID" class="control-label"></label>
-                <input asp-for="ID" class="form-control" />
-                <span asp-validation-for="ID" class="text-danger"></span>
+                @Html.DropDownListFor(model => model.Empresa,
+                    ((IEnumerable<Empresa>)ViewBag.ListaEmpresa).Select(option => new SelectListItem
+                    {
+                        Text = option.NomeFantasia + " - " + option.UF,
+                        Value = option.ID.ToString(),
+                        Selected = (Model != null) && (option.ID == Model.Empresa.ID)
+                }), "Escolha uma opção...", new { @class = "form-control" })
             </div>
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
@@ -26,6 +30,11 @@
                 <label asp-for="CpfCnpj" class="control-label"></label>
                 <input asp-for="CpfCnpj" class="form-control" />
                 <span asp-validation-for="CpfCnpj" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DtNascimento" class="control-label"></label>
+                <input asp-for="DtNascimento" class="form-control" />
+                <span asp-validation-for="DtNascimento" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

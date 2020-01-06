@@ -24,26 +24,35 @@ namespace DesafioPV.Controllers
 
         }
 
-        // GET: Fornecedor/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            
+            var fornecedor = _session.Get<Fornecedor>(id);
+
+            return View(fornecedor);
         }
 
         // GET: Fornecedor/Create
         public ActionResult Create()
         {
+
+            var ListaEmpresa = _session.Query<Empresa>().ToList();
+            ViewBag.ListaEmpresa = ListaEmpresa;
+
             return View();
         }
 
         // POST: Fornecedor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(IFormCollection form, Fornecedor fornecedor)
         {
             try
             {
-                // TODO: Add insert logic here
+                int idEmpresa = int.Parse(form["Empresa"].ToString());
+                fornecedor.Empresa = _session.Get<Empresa>(idEmpresa);
+                fornecedor.DtHoraCadastro = System.DateTime.Now;
+                _session.Save(fornecedor);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -76,21 +85,22 @@ namespace DesafioPV.Controllers
             }
         }
 
-        // GET: Fornecedor/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var empresa = _session.Get<Fornecedor>(id);
+            return View(empresa);
         }
 
-        // POST: Fornecedor/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Fornecedor fornecedor)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    _session.Delete(fornecedor);
+                    transaction.Commit();
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -98,5 +108,7 @@ namespace DesafioPV.Controllers
                 return View();
             }
         }
+
+
     }
 }

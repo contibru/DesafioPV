@@ -16,6 +16,7 @@ namespace DesafioPV.Mapping
             Map(x => x.Nome);
             Map(x => x.CpfCnpj);
             Map(x => x.DtHoraCadastro);
+            Map(x => x.DtNascimento);
             Table("Fornecedor");
             References(x => x.Empresa).Column("EmpresaID");
             HasMany(x => x.ListaTelefoneFornecedor).Table("TelefoneFornecedor");

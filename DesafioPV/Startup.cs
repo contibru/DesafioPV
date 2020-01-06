@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DesafioPV.Infra;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NHibernate.Tool.hbm2ddl;
 
 namespace DesafioPV
 {
@@ -24,6 +28,28 @@ namespace DesafioPV
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            IPersistenceConfigurer dbConfig = MySQLConfiguration.Standard.ConnectionString("Server=localhost;Port=3306;Database=desafiopv;Uid=sances;Pwd=laranjauva;");
+            var _sessionFactory = Fluently.Configure()
+                                      .Database(dbConfig)
+                                      .Mappings(m => m.FluentMappings.AddFromAssembly(GetType().Assembly))
+                                      .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
+                                      .BuildSessionFactory();
+
+            //Creates database structure
+
+
+
+            services.AddScoped(factory =>
+            {
+                return _sessionFactory.OpenSession();
+            });
+
+           // services.AddScoped(factory =>
+           //{
+           //    return ConnectionNH.StartSession();
+           //});
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

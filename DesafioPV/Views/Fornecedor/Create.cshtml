@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" onsubmit="return PreSave()"></div>
             <div class="form-group">
                 @Html.DropDownListFor(model => model.Empresa,
                     ((IEnumerable<Empresa>)ViewBag.ListaEmpresa).Select(option => new SelectListItem
@@ -43,29 +43,33 @@
                 <div id="divMensagem" style="color:red"></div>
             </div>
 
-            <table id="tableTelefone" class="table table-bordered table-condensed table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th data-override="Telefone">Telefone</th>
-                        <th width="10%">Excluir</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBodyValidade">
-                    @foreach (var TelefoneFornecedor in ViewBag.ListaTelefones)
-                    {
-                        <tr id="@TelefoneFornecedor.ID">
-                            <td>@TelefoneFornecedor.Telefone</td>
-                            <td class="centro">
-                                <button id="removeFun" type="button" onclick="deletarTelefone(this)" title="Remover telefone" class="btn btn-danger btn-xs">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true">
-                                    </span>
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <button id="btAddTelefone" type="button" title="Adicionar telefone"></button>
+            <div style="text-align: right">
+                <div style=max-height: 250px; overflow-y: auto; margin-bottom: 15px; text-align: left">
+                    <table id="tabelaTelefone" class="table table-hover table-condensed table-striped table-bordered link">
+                        <thead>
+                            <tr>
+                                <th width="95%" align="left" data-override="Telefone">Telefone</th>
+                                <th width="5%">Remover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyTelefone">
+                            @foreach (var exp in ViewBag.ListaTelefones)
+                            {
+                                <tr id="@exp.ID">
+                                    <td class="td-edit">@exp.Telefone</td>
+                                    <td class="centro">
+                                        <button type="button" class="btn btn-danger btn-xs" title="Excluir (@exp.ID)" onclick="deletarExp(this)" data-toggle="tooltip">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <input type="hidden" id="tableTelefoneContent" name="tableTelefoneContent" value="" />
+                </div>
+                <button id="btnAddTelefone" type="button" title="Adicionar telefone">Add. Telefone</button>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -79,7 +83,6 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
 
 <script type="text/javascript">
 
@@ -108,7 +111,34 @@
     //    return Math.floor(Math.ceil(Math.abs(nascimento.getTime() - hoje.getTime()) / (1000 * 3600 * 24)) / 365.25);
     //
     //}
+   $("#btnAddTelefone").on('click', function () {
 
+       $("#tabelaTelefone th").css('color', "#333");
+       $("#tabelaTelefone").css('border-color', "#ddd");
+
+       var tablebody = document.getElementById("bodyTelefone");
+       var row = tablebody.insertRow(-1);
+       var cell1 = row.insertCell(0);
+       cell1.className = " td-edit"
+       //cell1.innerHTML = '<input class="form-control" type="td-edit">';
+
+       var cell2 = row.insertCell(1);
+       cell2.innerHTML = "<button type=\"button\" onclick=\"deletarExp(this)\" title=\"Remover telefone\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span></button>";
+       cell2.className += " centro";
+
+        $('#tabelaTelefone').editableTableWidget();
+
+   });
+
+    function PreSave() {
+
+        var tableContent = $("#tabelaTelefone").tableToJSON({
+                includeRowId: 'ID',
+                onlyColumns: [1]
+            });
+            console.log(tableContent);
+            $("#tableTelefoneContent").val(JSON.stringify(tableContent));
+    }
 
 
 </script>

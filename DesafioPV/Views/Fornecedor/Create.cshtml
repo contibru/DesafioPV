@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" >
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 @Html.DropDownListFor(model => model.Empresa,
@@ -38,10 +38,34 @@
             </div>
             <div class="form-group">
                 <label asp-for="DtNascimento" class="control-label"></label>
-                <input asp-for="DtNascimento" class="form-control"/>
+                <input asp-for="DtNascimento" class="form-control" />
                 <span asp-validation-for="DtNascimento" class="text-danger"></span>
                 <div id="divMensagem" style="color:red"></div>
             </div>
+
+            <table id="tableTelefone" class="table table-bordered table-condensed table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th data-override="Telefone">Telefone</th>
+                        <th width="10%">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBodyValidade">
+                    @foreach (var TelefoneFornecedor in ViewBag.ListaTelefones)
+                    {
+                        <tr id="@TelefoneFornecedor.ID">
+                            <td>@TelefoneFornecedor.Telefone</td>
+                            <td class="centro">
+                                <button id="removeFun" type="button" onclick="deletarTelefone(this)" title="Remover telefone" class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true">
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button id="btAddTelefone" type="button" title="Adicionar telefone"></button>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

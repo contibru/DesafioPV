@@ -23,8 +23,13 @@
                 <span asp-validation-for="Cnpj" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UF" class="control-label"></label>
-                <input asp-for="UF" class="form-control" />
+                @Html.DropDownListFor(model => model.UF,
+                      ((IEnumerable<string>)ViewBag.ListaUF).Select(option => new SelectListItem
+                      {
+                          Text = option.Trim(),
+                          Value = option.Trim(),
+                          Selected = (Model != null) && (option.Trim() == Model.UF)
+                  }), "Secione o estado...", new { @class = "form-control" })
                 <span asp-validation-for="UF" class="text-danger"></span>
             </div>
             <div class="form-group">

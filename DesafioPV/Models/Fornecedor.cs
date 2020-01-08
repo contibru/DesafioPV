@@ -6,6 +6,12 @@ namespace DesafioPV.Models
 {
     public class Fornecedor
     {
+
+        public Fornecedor()
+        {
+            ListaTelefoneFornecedor = new List<TelefoneFornecedor>();
+        }
+
         public virtual int ID { get; set; }
 
         [Required]
@@ -30,7 +36,7 @@ namespace DesafioPV.Models
         [Required]
         public virtual Empresa Empresa{get; set;}
 
-        public virtual IList<TelefoneFornecedor> ListaTelefoneFornecedor { get; set; }
+        public virtual IList<TelefoneFornecedor> ListaTelefoneFornecedor { get; set; } = new List<TelefoneFornecedor>();
 
     }
 

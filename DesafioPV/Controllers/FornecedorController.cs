@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DesafioPV.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,8 @@ namespace DesafioPV.Controllers
 
             var ListaEmpresa = _session.Query<Empresa>().ToList();
             ViewBag.ListaEmpresa = ListaEmpresa;
+
+            ViewBag.ListaTelefones = new List<TelefoneFornecedor>();
 
             return View();
         }

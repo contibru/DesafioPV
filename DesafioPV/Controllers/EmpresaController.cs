@@ -1,7 +1,9 @@
 ﻿using DesafioPV.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using NHibernate;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -24,17 +26,67 @@ namespace DesafioPV.Controllers
 
         public ActionResult Create()
         {
+
+            ViewBag.ListaUf = GetListaUF();
+
             return View();
         }
+
+        public List<string> GetListaUF()
+        {
+            var ListaUf = new List<string>
+            {
+                "AC",
+                "AL",
+                "AM",
+                "AP",
+                "BA",
+                "CE",
+                "DF",
+                "ES",
+                "GO",
+                "MA",
+                "MG",
+                "MS",
+                "MT",
+                "PA",
+                "PB",
+                "PE",
+                "PI",
+                "PR",
+                "RJ",
+                "RN",
+                "RO",
+                "RR",
+                "RS",
+                "SC",
+                "SE",
+                "SP",
+                "TO"
+            };
+
+            return ListaUf;
+        }
+
+
 
         [HttpPost]
         public ActionResult Create(Empresa empresa)
         {
             try
             {
-                _session.Save(empresa);
 
-                return RedirectToAction(nameof(Index));
+                if (TryValidateModel(empresa)) { 
+
+                    _session.Save(empresa);
+
+                    return RedirectToAction(nameof(Index));
+                }
+                
+                ViewBag.ListaUf = GetListaUF();
+                return View();
+
+                
             }
             catch
             {

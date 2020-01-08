@@ -9,12 +9,16 @@ namespace DesafioPV.Models
     {
         public virtual int ID { get; set; }
 
+        [Required]
         [Display(Name ="Nome fantasia")]
         public virtual string NomeFantasia { get; set; }
 
+        [Required]
         [Display(Name = "CNPJ")]
+        [CustomValidationCnpj()]
         public virtual string Cnpj { get; set; }
 
+        [Required]
         [MaxLength(2)]
         public virtual string UF { set; get; }
                

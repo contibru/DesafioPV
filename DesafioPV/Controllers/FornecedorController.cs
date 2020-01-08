@@ -53,7 +53,7 @@ namespace DesafioPV.Controllers
                 fornecedor.Empresa = _session.Get<Empresa>(idEmpresa);
                 fornecedor.DtHoraCadastro = System.DateTime.Now;
 
-                if (ModelState.IsValid)
+                if (TryValidateModel(fornecedor))
                 {
                     _session.Save(fornecedor);
 
@@ -62,7 +62,6 @@ namespace DesafioPV.Controllers
 
                 var ListaEmpresa = _session.Query<Empresa>().ToList();
                 ViewBag.ListaEmpresa = ListaEmpresa;
-                fornecedor.UfEmpresa = fornecedor.Empresa.UF;
 
                 return View();
             }

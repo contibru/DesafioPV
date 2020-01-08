@@ -10,14 +10,12 @@ namespace DesafioPV.Models
     public class CustomValidationAge : ValidationAttribute
     {
 
-        protected override ValidationResult
-                        IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-
 
             var fornecedor = (Models.Fornecedor) validationContext.ObjectInstance;
 
-            if (fornecedor.UfEmpresa == "PR")
+            if (fornecedor.DtNascimento != null && fornecedor.Empresa != null && fornecedor.Empresa.UF == "PR")
             {
                 if (Utils.GetAge(value) < 18)
                 {

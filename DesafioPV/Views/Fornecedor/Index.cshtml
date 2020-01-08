@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.CpfCnpj)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Rg)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DtNascimento)
             </th>
             <th>
@@ -43,15 +46,18 @@
                 @Html.DisplayFor(modelItem => item.CpfCnpj)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Rg)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DtNascimento)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DtHoraCadastro)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new {  id=item.ID}) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.ID})
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
             </td>
         </tr>
 }

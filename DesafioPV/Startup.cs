@@ -29,6 +29,8 @@ namespace DesafioPV
         {
             services.AddControllersWithViews();
 
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+
             IPersistenceConfigurer dbConfig = MySQLConfiguration.Standard.ConnectionString("Server=localhost;Port=3306;Database=desafiopv;Uid=sances;Pwd=laranjauva;");
             var _sessionFactory = Fluently.Configure()
                                       .Database(dbConfig)
@@ -58,6 +60,7 @@ namespace DesafioPV
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {

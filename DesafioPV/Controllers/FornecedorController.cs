@@ -52,9 +52,19 @@ namespace DesafioPV.Controllers
                 int idEmpresa = int.Parse(form["Empresa"].ToString());
                 fornecedor.Empresa = _session.Get<Empresa>(idEmpresa);
                 fornecedor.DtHoraCadastro = System.DateTime.Now;
-                _session.Save(fornecedor);
 
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _session.Save(fornecedor);
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var ListaEmpresa = _session.Query<Empresa>().ToList();
+                ViewBag.ListaEmpresa = ListaEmpresa;
+                fornecedor.UfEmpresa = fornecedor.Empresa.UF;
+
+                return View();
             }
             catch
             {

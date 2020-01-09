@@ -14,7 +14,7 @@ namespace DesafioPV.Infra
     public class ConnectionNH
     {
 
-        private static string ConnectionString = "Server=localhost;Port=3306;Database=desafiopv;Uid=sances;Pwd=laranjauva;";
+        private static string ConnectionString = "Server=localhost;Port=3306;Database=desafiopv;Uid=root;Pwd=;";
         private static ISessionFactory session;
 
         public static ISessionFactory CreateSession()

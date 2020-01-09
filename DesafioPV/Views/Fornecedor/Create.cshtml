@@ -10,15 +10,15 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger" onsubmit="return PreSave()"></div>
+        <form asp-action="Create" onsubmit="return PreSave()">
+            <div asp-validation-summary="None" class="text-danger"></div>
             <div class="form-group">
                 @Html.DropDownListFor(model => model.Empresa,
                     ((IEnumerable<Empresa>)ViewBag.ListaEmpresa).Select(option => new SelectListItem
                     {
                         Text = option.NomeFantasia + " - " + option.UF,
                         Value = option.ID.ToString(),
-                        Selected = (Model != null) && (option.ID == Model.Empresa.ID)
+                        Selected = (Model != null) && (option.ID.ToString() == Model.Empresa.ID.ToString() || option.ID == ViewBag.IdEmpresa)
                 }), "Escolha uma opção...", new { @class = "form-control" })
             </div>
             <div class="form-group">
@@ -125,7 +125,7 @@
        var cell2 = row.insertCell(1);
        cell2.innerHTML = "<button type=\"button\" onclick=\"deletarExp(this)\" title=\"Remover telefone\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span></button>";
        cell2.className += " centro";
-
+       console.log($("#Empresa"))
         $('#tabelaTelefone').editableTableWidget();
 
    });
@@ -137,7 +137,9 @@
                 onlyColumns: [1]
             });
             console.log(tableContent);
-            $("#tableTelefoneContent").val(JSON.stringify(tableContent));
+        $("#tableTelefoneContent").val(JSON.stringify(tableContent));
+
+        return true;
     }
 
 

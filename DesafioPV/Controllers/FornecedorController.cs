@@ -3,6 +3,7 @@ using System.Linq;
 using DesafioPV.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NHibernate;
 
 namespace DesafioPV.Controllers
@@ -25,6 +26,17 @@ namespace DesafioPV.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult Index(string searchString)
+        {
+
+            var Fornecedores = _session.Query<Fornecedor>().Where(x => x.Nome.Contains(searchString) || 
+                                                                  x.CpfCnpj.Contains(searchString) || 
+                                                                  x.DtHoraCadastro.ToString().Contains(searchString)).ToList();
+
+            return View(Fornecedores);
+        }
+
         public ActionResult Details(int id)
         {
             
@@ -39,7 +51,7 @@ namespace DesafioPV.Controllers
 
             var ListaEmpresa = _session.Query<Empresa>().ToList();
             ViewBag.ListaEmpresa = ListaEmpresa;
-
+            ViewBag.IdEmpresa = 0;
             ViewBag.ListaTelefones = new List<TelefoneFornecedor>();
 
             return View();
@@ -56,17 +68,33 @@ namespace DesafioPV.Controllers
                 fornecedor.Empresa = _session.Get<Empresa>(idEmpresa);
                 fornecedor.DtHoraCadastro = System.DateTime.Now;
 
+                dynamic listaTel = JsonConvert.DeserializeObject(form["tableTelefoneContent"]);
+
                 if (TryValidateModel(fornecedor))
                 {
                     _session.Save(fornecedor);
 
+                    if (listaTel != null)
+                    {
+
+                        foreach (var item in listaTel)
+                        {
+                            _session.Save(new TelefoneFornecedor { Telefone = item.Telefone, Fornecedor = fornecedor });
+                        }
+
+                    }
+
+
+
                     return RedirectToAction(nameof(Index));
                 }
 
+                ViewBag.IdEmpresa = idEmpresa;
+                ViewBag.ListaTelefones = fornecedor.ListaTelefoneFornecedor;
                 var ListaEmpresa = _session.Query<Empresa>().ToList();
                 ViewBag.ListaEmpresa = ListaEmpresa;
 
-                return View();
+                return View(fornecedor);
             }
             catch
             {

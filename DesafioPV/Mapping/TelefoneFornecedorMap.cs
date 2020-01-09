@@ -13,9 +13,9 @@ namespace DesafioPV.Mapping
         public TelefoneFornecedorMap()
         {
             Id(x => x.ID);
-            Map(x => x.Telefone);
+            Map(x => x.Telefone).Not.Nullable();
+            References(x => x.Fornecedor).Column("FornecedorID").Cascade.All();
             Table("TelefoneFornecedor");
-            References(x => x.Fornecedor).Column("FornecedorID");
 
         }
 

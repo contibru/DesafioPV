@@ -33,7 +33,7 @@ namespace DesafioPV.Models
         [CustomValidationAge(ErrorMessage = "Para o Paraná, são aceitos apenas fornecedores maiores de idade")]
         public virtual DateTime DtNascimento { get; set; }
 
-        [Required]
+
         public virtual Empresa Empresa{get; set;}
 
         public virtual IList<TelefoneFornecedor> ListaTelefoneFornecedor { get; set; } = new List<TelefoneFornecedor>();

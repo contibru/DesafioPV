@@ -20,7 +20,9 @@ namespace DesafioPV.Mapping
             
             Table("Fornecedor");
             References(x => x.Empresa).Column("EmpresaID");
-            HasMany(x => x.ListaTelefoneFornecedor).Table("TelefoneFornecedor");
+
+            HasMany(x => x.ListaTelefoneFornecedor).Table("TelefoneFornecedor").KeyColumn("FornecedorID").Cascade.All().Inverse();
+
 
         }
 

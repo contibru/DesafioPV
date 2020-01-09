@@ -25,6 +25,10 @@ namespace DesafioPV.Infra
         /// <returns>Boolean True/False onde True=Digito CNPJ Valido</returns>
         public static Boolean CNPJIsValid(string cnpj)
         {
+
+            if (cnpj == null || cnpj.Length == 0)
+                return false;
+
             // Declara variaveis para uso
             string new_cnpj = "";
 
@@ -36,6 +40,9 @@ namespace DesafioPV.Infra
                     new_cnpj += cnpj.Substring(i, 1);
                 }
             }
+            if (new_cnpj == null || new_cnpj.Length == 0)
+                return false;
+
 
             // Ajusta o Tamanho do CNPJ para 14 digitos considerando o digito verificador e completando com zeros a esquerda
             new_cnpj = Convert.ToInt64(new_cnpj).ToString("D14");

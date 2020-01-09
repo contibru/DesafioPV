@@ -127,8 +127,8 @@ namespace DesafioPV.Controllers
 
         public ActionResult Delete(int id)
         {
-            var empresa = _session.Get<Fornecedor>(id);
-            return View(empresa);
+            var fornecedor = _session.Get<Fornecedor>(id);
+            return View(fornecedor);
         }
 
         [HttpPost]
@@ -138,6 +138,12 @@ namespace DesafioPV.Controllers
             {
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
+
+                    foreach (var item in fornecedor.ListaTelefoneFornecedor)
+                    {
+                        _session.Delete(item);
+                    }
+
                     _session.Delete(fornecedor);
                     transaction.Commit();
                 }
